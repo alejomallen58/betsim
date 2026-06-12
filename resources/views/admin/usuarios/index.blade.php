@@ -39,7 +39,7 @@
                 <td style="font-weight:600;color:#fff">{{ $usuario->name }}</td>
                 <td style="color:#94a3b8;font-size:.875rem">{{ $usuario->email }}</td>
                 <td>
-                    <span style="color:#4ade80;font-weight:700">{{ number_format($usuario->saldo, 2) }} €</span>
+                    <span style="color:#4ade80;font-weight:700">{{ number_format($usuario->saldo, 2, ',', '.') }} €</span>
                 </td>
                 <td style="color:#94a3b8;font-size:.875rem;text-align:center">{{ $usuario->apuestas_count }}</td>
                 <td style="color:#64748b;font-size:.8rem">{{ $usuario->created_at->format('d/m/Y') }}</td>

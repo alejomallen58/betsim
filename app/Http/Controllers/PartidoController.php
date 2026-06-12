@@ -12,8 +12,17 @@ class PartidoController extends Controller
     {
         $ligas = Liga::where('activa', true)->get();
 
+        $hace2dias = now()->subDays(2);
+
         $query = Partido::with(['equipoLocal', 'equipoVisitante', 'liga', 'cuota'])
-            ->where('estado', 'pendiente')
+            ->where(function ($q) use ($hace2dias) {
+                $q->where('estado', 'pendiente')
+                  ->orWhere(function ($q2) use ($hace2dias) {
+                      $q2->where('estado', 'finalizado')
+                         ->where('fecha', '>=', $hace2dias);
+                  });
+            })
+            ->orderByRaw("CASE WHEN estado = 'pendiente' THEN 0 ELSE 1 END")
             ->orderBy('fecha');
 
         if ($request->filled('liga')) {

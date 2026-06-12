@@ -6,7 +6,7 @@
     <h1 class="text-2xl font-bold text-white">Mis Apuestas</h1>
     <div class="text-right">
         <div class="text-slate-400 text-sm">Saldo actual</div>
-        <div class="text-2xl font-bold text-green-400">{{ number_format(auth()->user()->saldo, 2) }} €</div>
+        <div class="text-2xl font-bold text-green-400">{{ number_format(auth()->user()->saldo, 2, ',', '.') }} €</div>
     </div>
 </div>
 
@@ -72,9 +72,9 @@
                         @else 2 (Visitante)
                         @endif
                     </td>
-                    <td class="text-white">{{ number_format($apuesta->cantidad, 2) }} €</td>
+                    <td class="text-white">{{ number_format($apuesta->cantidad, 2, ',', '.') }} €</td>
                     <td class="text-sky-400 font-bold">x{{ $apuesta->cuota }}</td>
-                    <td class="text-green-400 font-semibold">{{ number_format($apuesta->ganancia_potencial, 2) }} €</td>
+                    <td class="text-green-400 font-semibold">{{ number_format($apuesta->ganancia_potencial, 2, ',', '.') }} €</td>
                     <td>
                         @php
                             $clases = ['ganada'=>'text-green-400','perdida'=>'text-red-400','pendiente'=>'text-yellow-400','cancelada'=>'text-slate-500'];

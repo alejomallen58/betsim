@@ -55,7 +55,7 @@
     </div>
     <div class="nav-right">
         @auth
-            <span style="color:#4ade80;font-weight:600;font-size:.875rem">💰 {{ number_format(auth()->user()->saldo, 2) }} €</span>
+            <span style="color:#4ade80;font-weight:600;font-size:.875rem">💰 {{ number_format(auth()->user()->saldo, 2, ',', '.') }} €</span>
             <span style="color:#94a3b8;font-size:.875rem">{{ auth()->user()->name }}</span>
             <form method="POST" action="{{ route('logout') }}" style="margin:0">
                 @csrf

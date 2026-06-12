@@ -112,7 +112,7 @@
                        step="0.01" placeholder="Ej: 50"
                        oninput="calcularGanancia()">
                 <div class="saldo-hint">
-                    Saldo disponible: <strong>{{ number_format(auth()->user()->saldo, 2) }} €</strong>
+                    Saldo disponible: <strong>{{ number_format(auth()->user()->saldo, 2, ',', '.') }} €</strong>
                 </div>
             </div>
 

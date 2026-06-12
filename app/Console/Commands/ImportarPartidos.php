@@ -71,10 +71,18 @@ class ImportarPartidos extends Command
             $omitidos  = 0;
 
             foreach ($partidos as $p) {
-                $nombreLocal     = $p['homeTeam']['name'];
-                $nombreVisitante = $p['awayTeam']['name'];
-                $fecha           = $p['utcDate'];        // "2025-05-30T19:00:00Z"
-                $jornada         = 'Jornada ' . ($p['matchday'] ?? '?');
+                $nombreLocal     = $p['homeTeam']['name'] ?? '';
+                $nombreVisitante = $p['awayTeam']['name'] ?? '';
+                $fecha           = $p['utcDate'] ?? null;
+
+                // Descartar partidos con datos incompletos
+                if (empty($nombreLocal) || empty($nombreVisitante) || empty($fecha)) {
+                    $this->warn("  Partido omitido por datos incompletos (equipo o fecha vacíos).");
+                    $omitidos++;
+                    continue;
+                }
+
+                $jornada = 'Jornada ' . ($p['matchday'] ?? '?');
 
                 // Buscar o crear equipos
                 $local     = Equipo::firstOrCreate(

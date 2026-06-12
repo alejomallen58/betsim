@@ -116,6 +116,11 @@ class AdminPartidoController extends Controller
     {
         $this->soloAdmin();
 
+        if ($partido->fecha->isFuture()) {
+            return redirect()->route('admin.partidos.resultado.form', $partido)
+                ->with('error', 'No se puede registrar el resultado de un partido que aún no ha tenido lugar.');
+        }
+
         $request->validate([
             'goles_local'     => 'required|integer|min:0|max:20',
             'goles_visitante' => 'required|integer|min:0|max:20',

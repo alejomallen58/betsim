@@ -13,9 +13,13 @@ class AdminApiController extends Controller
 
         Artisan::call('partidos:importar');
         $output = Artisan::output();
+        $resumen = str_replace("\n", ' | ', trim($output));
+
+        $hayError = str_contains($output, 'Error') || str_contains($output, 'Configura');
 
         return redirect()->route('admin.partidos.index')
-            ->with('success', 'Importación completada: ' . str_replace("\n", ' | ', trim($output)));
+            ->with($hayError ? 'error' : 'success',
+                   ($hayError ? 'La importación ha fallado: ' : 'Importación completada: ') . $resumen);
     }
 
     public function sincronizar()
@@ -24,9 +28,13 @@ class AdminApiController extends Controller
 
         Artisan::call('partidos:resultados');
         $output = Artisan::output();
+        $resumen = str_replace("\n", ' | ', trim($output));
+
+        $hayError = str_contains($output, 'Error');
 
         return redirect()->route('admin.partidos.index')
-            ->with('success', 'Sincronización completada: ' . str_replace("\n", ' | ', trim($output)));
+            ->with($hayError ? 'error' : 'success',
+                   ($hayError ? 'La sincronización ha fallado: ' : 'Sincronización completada: ') . $resumen);
     }
 
     public function importarNba()
@@ -35,8 +43,12 @@ class AdminApiController extends Controller
 
         Artisan::call('nba:importar');
         $output = Artisan::output();
+        $resumen = str_replace("\n", ' | ', trim($output));
+
+        $hayError = str_contains($output, 'Error');
 
         return redirect()->route('admin.partidos.index')
-            ->with('success', 'NBA importada: ' . str_replace("\n", ' | ', trim($output)));
+            ->with($hayError ? 'error' : 'success',
+                   ($hayError ? 'La importación NBA ha fallado: ' : 'NBA importada: ') . $resumen);
     }
 }
