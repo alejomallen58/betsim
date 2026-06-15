@@ -11,21 +11,25 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Admin
-        User::create([
-            'name'     => 'Administrador',
-            'email'    => 'admin@apuestas.com',
-            'password' => Hash::make('password'),
-            'saldo'    => 0,
-            'is_admin' => true,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@apuestas.com'],
+            [
+                'name'     => 'Administrador',
+                'password' => Hash::make('password'),
+                'saldo'    => 0,
+                'is_admin' => true,
+            ]
+        );
 
         // Usuario de prueba
-        User::create([
-            'name'     => 'Usuario Demo',
-            'email'    => 'demo@apuestas.com',
-            'password' => Hash::make('password'),
-            'saldo'    => 1000.00,
-            'is_admin' => false,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'demo@apuestas.com'],
+            [
+                'name'     => 'Usuario Demo',
+                'password' => Hash::make('password'),
+                'saldo'    => 1000.00,
+                'is_admin' => false,
+            ]
+        );
     }
 }

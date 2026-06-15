@@ -55,21 +55,28 @@ class PartidoSeeder extends Seeder
     private function crearPartido(int $ligaId, int $localId, int $visitanteId, $fecha, string $jornada,
                                    float $cLocal, float $cEmpate, float $cVisitante): Partido
     {
-        $partido = Partido::create([
-            'liga_id'             => $ligaId,
-            'equipo_local_id'     => $localId,
-            'equipo_visitante_id' => $visitanteId,
-            'fecha'               => $fecha,
-            'estado'              => 'pendiente',
-            'jornada'             => $jornada,
-        ]);
+        // Evitar duplicados: mismo par de equipos con la misma jornada
+        $partido = Partido::firstOrCreate(
+            [
+                'equipo_local_id'     => $localId,
+                'equipo_visitante_id' => $visitanteId,
+                'jornada'             => $jornada,
+            ],
+            [
+                'liga_id' => $ligaId,
+                'fecha'   => $fecha,
+                'estado'  => 'pendiente',
+            ]
+        );
 
-        Cuota::create([
-            'partido_id'      => $partido->id,
-            'cuota_local'     => $cLocal,
-            'cuota_empate'    => $cEmpate,
-            'cuota_visitante' => $cVisitante,
-        ]);
+        if (!$partido->cuota) {
+            Cuota::create([
+                'partido_id'      => $partido->id,
+                'cuota_local'     => $cLocal,
+                'cuota_empate'    => $cEmpate,
+                'cuota_visitante' => $cVisitante,
+            ]);
+        }
 
         return $partido;
     }
